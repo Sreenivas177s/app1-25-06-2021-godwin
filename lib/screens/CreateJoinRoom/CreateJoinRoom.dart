@@ -1,14 +1,27 @@
 import 'package:app1/screens/CreateJoinRoom/AllTeams.dart';
 import 'package:app1/screens/CreateJoinRoom/YourTeams.dart';
+import 'package:app1/services/rtDatabase.dart';
 import 'package:flutter/material.dart';
 
-class CreateJoinRoom extends StatelessWidget {
+class CreateJoinRoom extends StatefulWidget {
+  @override
+  _CreateJoinRoomState createState() => _CreateJoinRoomState();
+}
+
+class _CreateJoinRoomState extends State<CreateJoinRoom> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.grey.shade700,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/createnewteam');
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.grey.shade700,
+        ),
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -18,18 +31,19 @@ class CreateJoinRoom extends StatelessWidget {
             indicatorColor: Colors.amber.shade700,
             tabs: <Widget>[
               Tab(
-                text: "Your Teams",
+                text: "All Teams",
               ),
               Tab(
-                text: "All Teams",
+                text: "Your Teams",
               ),
             ],
             labelColor: Colors.white,
           ),
         ),
         body: TabBarView(children: <Widget>[
-          YourTeams(),
+          
           AllTeams(),
+          YourTeams(),
         ]),
       ),
     );

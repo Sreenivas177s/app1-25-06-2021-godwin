@@ -1,12 +1,15 @@
 //import 'package:app1/screens/CreateJoinRoom/TeamDetails.dart';
+import 'package:app1/screens/CreateJoinRoom/team_player.dart';
 import 'package:flutter/material.dart';
+
+import 'YourTeams.dart';
 
 class AllTeams extends StatelessWidget {
   ListTile tiles(
       {required String name,
       required String number,
-      required IconData icon2,
-      required Function() onTap}) {
+      required int index,
+      required BuildContext context}) {
     return ListTile(
       leading: Icon(
         Icons.people,
@@ -20,7 +23,15 @@ class AllTeams extends StatelessWidget {
         Container(
             padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
             child: new IconButton(
-                icon: new Icon(icon2), iconSize: 35, onPressed: () {}))
+                icon: new Icon(Icons.chevron_right),
+                iconSize: 35,
+                onPressed: () {
+                  tindex = teams[index];
+                  Navigator.pushNamed(
+                    context,
+                    '/teamdetails',
+                  );
+                }))
       ]),
     );
   }
@@ -31,35 +42,31 @@ class AllTeams extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Card(
-      margin: EdgeInsets.all(10),
-      color: Colors.white,
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+    return SingleChildScrollView(
       child: Container(
-        alignment: Alignment.topLeft,
-        height: 582,
-        width: 340,
-        child: Column(children: <Widget>[
-          tiles(
-            name: 'test',
-            number: 'ID:test-260421-3',
-            icon2: Icons.chevron_right,
-            onTap: () {
-              Navigator.pushNamed(context, '/TeamDetails');
-            },
-          ),
-          tiles(
-            name: 'test',
-            number: 'ID:test-260421-4',
-            icon2: Icons.chevron_right,
-            onTap: () {
-              Navigator.pushNamed(context, '/TeamDetails');
-            },
-          ),
-        ]),
-      ),
-    ));
+          child: Card(
+        margin: EdgeInsets.all(10),
+        color: Colors.white,
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        child: Container(
+          alignment: Alignment.topLeft,
+          height: 582,
+          width: 340,
+          child:  ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                itemCount: teams.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return tiles(
+                      name: teams[index].tname,
+                      number: teams[index].adminphone,
+                      context: context,
+                      index: index);
+                })
+        ),
+      )),
+    );
   }
 }

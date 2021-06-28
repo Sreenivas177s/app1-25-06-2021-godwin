@@ -1,43 +1,75 @@
 //import 'package:app1/screens/CreateJoinRoom/TeamDetails.dart';
-import 'package:app1/screens/CreateJoinRoom/TeamDetails.dart';
+import 'package:app1/screens/CreateJoinRoom/team_player.dart';
+import 'package:app1/screens/Loginpage/login.dart';
+import 'package:app1/services/rtDatabase.dart';
 import 'package:flutter/material.dart';
 
-class YourTeams extends StatelessWidget {
+List teams = [];
+var tindex = null;
+List<Team> userteams = [];
+
+void filterUserTeams() {
+  List<Team> a = [];
+  for (var i = 0; i < teams.length; i++) {
+    var item = teams[i];
+    if (item.useremail == useremail) {
+      a.add(item);
+    }
+  }
+  userteams = a;
+}
+
+class YourTeams extends StatefulWidget {
+  @override
+  _YourTeamsState createState() => _YourTeamsState();
+}
+
+class _YourTeamsState extends State<YourTeams> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getTeam();
+      filterUserTeams();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Card(
-      margin: EdgeInsets.all(10),
-      color: Colors.white,
-      elevation: 10.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+    return SingleChildScrollView(
       child: Container(
-        alignment: Alignment.topLeft,
-        height: 582,
-        width: 340,
-        child: Column(children: <Widget>[
-          tiles(
-            name: 'test',
-            number: 'ID:test-260421-3 \n1 Players Joined',
-            icon2: Icons.chevron_right,
-            context: context,
-          ),
-          Padding(padding: EdgeInsets.all(10)),
-          tiles(
-            name: 'test',
-            number: 'ID:test-260421-4 \n1 Players Joined',
-            icon2: Icons.chevron_right,
-            context: context,
-          ),
-        ]),
-      ),
-    ));
+          child: Card(
+        margin: EdgeInsets.all(10),
+        color: Colors.white,
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        child: Container(
+          alignment: Alignment.topLeft,
+          height: 582,
+          width: 340,
+          child: Column(children: <Widget>[
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                itemCount: userteams.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return tiles(
+                      name: userteams[index].tname,
+                      number: userteams[index].adminphone,
+                      context: context,
+                      index: index);
+                }),
+          ]),
+        ),
+      )),
+    );
   }
 
   ListTile tiles(
       {required String name,
       required String number,
-      required IconData icon2,
+      required int index,
       required BuildContext context}) {
     return ListTile(
       leading: Icon(
@@ -52,10 +84,14 @@ class YourTeams extends StatelessWidget {
         Container(
             padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
             child: new IconButton(
-                icon: new Icon(icon2),
+                icon: new Icon(Icons.chevron_right),
                 iconSize: 35,
                 onPressed: () {
-                  Navigator.pushNamed(context, '/teamdetails');
+                  tindex = (userteams[index]);
+                  Navigator.pushReplacementNamed(
+                    context,
+                    '/teamdetails',
+                  );
                 }))
       ]),
     );

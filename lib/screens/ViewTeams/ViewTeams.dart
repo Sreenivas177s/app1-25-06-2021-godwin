@@ -1,3 +1,4 @@
+import 'package:app1/screens/Loginpage/login.dart';
 import 'package:flutter/material.dart';
 
 class ViewTeams extends StatefulWidget {
@@ -14,26 +15,51 @@ class _ViewTeamsState extends State<ViewTeams> {
   double _height1 = 0;
   double _width2 = 0;
   double _height2 = 0;
+  List final_set = ["","",""];
+  String mi =
+          "Mumbai Indians \n  Rohit Sharma (c) (bat) \n  Sachin Tendulkar(bat) \n  Jasprit Bumrah(c)",
+      csk =
+          "Chennai Super Kings \n  MS Dhone(c) (WK) \n  Stephen Fleming (bat) \n  Ravindra Jadeja (ALL)",
+      srh =
+          "SunRisers Hyderabad \n  Kane Williamson (c) (bat) \n  Raashid Khan (bowl) \n David Warner (bat)";
+  List getTeamset() {
+    var sets = [
+      [
+        mi,
+        csk,
+        srh,
+      ],
+      [csk, mi, srh],
+      [srh, csk, mi]
+    ];
+    return sets[(useremail.length % 3)];
+  }
 
   AnimationFunction() {
     setState(() {
       _width = _width == 400 ? 400 : 400;
-      _height = _height == 570 ? 40 : 570;
+      _height = _height == 570 ? 130: 570;
     });
   }
 
   AnimationFunction1() {
     setState(() {
       _width1 = _width1 == 400 ? 400 : 400;
-      _height1 = _height1 == 570 ? 40 : 570;
+      _height1 = _height1 == 570 ? 130 : 570;
     });
   }
 
   AnimationFunction2() {
     setState(() {
       _width2 = _width2 == 400 ? 400 : 400;
-      _height2 = _height2 == 570 ? 40 : 570;
+      _height2 = _height2 == 570 ? 130 : 570;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final_set = getTeamset();
   }
 
   @override
@@ -76,7 +102,7 @@ class _ViewTeamsState extends State<ViewTeams> {
                             color: Colors.blue.shade300,
                             alignment: Alignment.center,
                             child: Text(
-                              "Team 1- Mumbai Indians",
+                              final_set[0],
                               style: TextStyle(fontSize: 25),
                             ),
                           )
@@ -117,7 +143,7 @@ class _ViewTeamsState extends State<ViewTeams> {
                             color: Colors.yellow.shade300,
                             alignment: Alignment.center,
                             child: Text(
-                              "Team 2- Chennai Super Kings",
+                              final_set[1],
                               style: TextStyle(fontSize: 25),
                             ),
                           )
@@ -157,7 +183,7 @@ class _ViewTeamsState extends State<ViewTeams> {
                             color: Colors.orange.shade300,
                             alignment: Alignment.center,
                             child: Text(
-                              "Team 3- Sunrises Hyderabad",
+                              final_set[2],
                               style: TextStyle(fontSize: 25),
                             ),
                           ),
