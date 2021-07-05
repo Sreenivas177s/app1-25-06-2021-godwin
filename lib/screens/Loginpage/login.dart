@@ -1,6 +1,9 @@
+import 'package:app1/main.dart';
 import 'package:app1/screens/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 final auth = FirebaseAuth.instance;
 String useremail = "";
@@ -19,6 +22,18 @@ class _LoginPageState extends State<LoginPage> {
   String error = "";
 
   List<String> keys = [];
+
+  getToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print(token);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +69,20 @@ class _LoginPageState extends State<LoginPage> {
                 print(emailctrl.text);
               },
               child: Text("Login")),
-          (isNotCreated)?ElevatedButton(
-              onPressed: () {
-                auth
-                    .createUserWithEmailAndPassword(
-                        email: emailctrl.text.trim(),
-                        password: passwordctrl.text.trim())
-                    .then((_) {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => MyHomePage(title: "")));
-                });
-              },
-              child: Text("Create New User")):Text(""),
+          (isNotCreated)
+              ? ElevatedButton(
+                  onPressed: () {
+                    auth
+                        .createUserWithEmailAndPassword(
+                            email: emailctrl.text.trim(),
+                            password: passwordctrl.text.trim())
+                        .then((_) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => MyHomePage(title: "")));
+                    });
+                  },
+                  child: Text("Create New User"))
+              : Text(""),
         ],
       )),
     );

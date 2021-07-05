@@ -1,11 +1,16 @@
 import 'dart:convert';
 
+import 'package:app1/main.dart';
 import 'package:app1/screens/CreateJoinRoom/YourTeams.dart';
 import 'package:app1/screens/CreateJoinRoom/team_player.dart';
 import 'package:app1/screens/Loginpage/login.dart';
 import 'package:app1/services/rtDatabase.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 class CreateTeam extends StatefulWidget {
   const CreateTeam({Key? key}) : super(key: key);
@@ -32,7 +37,11 @@ class _CreateTeamState extends State<CreateTeam> {
         isCap: isCap,
         phone: phone);
   }
+  
 
+  void notification(){
+ 
+  }
   @override
   Widget build(BuildContext context) {
     var l = context.read<PLayerList>();
@@ -81,6 +90,11 @@ class _CreateTeamState extends State<CreateTeam> {
           },
           child: Icon(Icons.save_outlined)),
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: notification,
+              icon: Icon(Icons.notifications))
+        ],
         centerTitle: true,
         title: Text(
           "Create A New Team",
@@ -198,7 +212,8 @@ class _CreateTeamState extends State<CreateTeam> {
                       playertype = val.toString();
                     },
                     //value: playertype,
-                    items: ['Bat', 'Bowl', 'WK','All'].map<DropdownMenuItem<String>>(
+                    items: ['Bat', 'Bowl', 'WK', 'All']
+                        .map<DropdownMenuItem<String>>(
                       (String val) {
                         return DropdownMenuItem(
                           child: Text(val.toString()),
