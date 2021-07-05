@@ -1,5 +1,8 @@
 import 'package:app1/screens/Loginpage/login.dart';
+import 'package:app1/services/rtDatabase.dart';
 import 'package:flutter/material.dart';
+
+var iplTeams;
 
 class ViewTeams extends StatefulWidget {
   const ViewTeams({Key? key}) : super(key: key);
@@ -15,30 +18,14 @@ class _ViewTeamsState extends State<ViewTeams> {
   double _height1 = 0;
   double _width2 = 0;
   double _height2 = 0;
-  List final_set = ["","",""];
-  String mi =
-          "Mumbai Indians \n  Rohit Sharma (c) (bat) \n  Sachin Tendulkar(bat) \n  Jasprit Bumrah(c)",
-      csk =
-          "Chennai Super Kings \n  MS Dhone(c) (WK) \n  Stephen Fleming (bat) \n  Ravindra Jadeja (ALL)",
-      srh =
-          "SunRisers Hyderabad \n  Kane Williamson (c) (bat) \n  Raashid Khan (bowl) \n David Warner (bat)";
-  List getTeamset() {
-    var sets = [
-      [
-        mi,
-        csk,
-        srh,
-      ],
-      [csk, mi, srh],
-      [srh, csk, mi]
-    ];
-    return sets[(useremail.length % 3)];
-  }
+  List final_set = ["", "", ""];
+  String a = "", b = "", c = '';
+  List<String> teamlist = ['mi', 'csk', 'srh', 'dc', 'pk', 'kkr', 'rcb', 'rr'];
 
   AnimationFunction() {
     setState(() {
       _width = _width == 400 ? 400 : 400;
-      _height = _height == 570 ? 130: 570;
+      _height = _height == 570 ? 130 : 570;
     });
   }
 
@@ -56,10 +43,25 @@ class _ViewTeamsState extends State<ViewTeams> {
     });
   }
 
+  void setTeamList() {
+    if (a != "") {
+      final_set[0] = iplTeams[a];
+      teamlist.remove(a);
+    }
+    if (b != "") {
+      final_set[1] = iplTeams[b];
+      teamlist.remove(b);
+    }
+    if (c != "") {
+      final_set[2] = iplTeams[c];
+      teamlist.remove(c);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    final_set = getTeamset();
+    getIplTeam();
   }
 
   @override
@@ -77,7 +79,7 @@ class _ViewTeamsState extends State<ViewTeams> {
           //  curve: Curves.bounceInOut,
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+            children: [
               Card(
                 margin: EdgeInsets.all(10),
                 color: Colors.white,
@@ -199,7 +201,85 @@ class _ViewTeamsState extends State<ViewTeams> {
                   onPressed: () {
                     AnimationFunction2();
                   },
-                  child: Text("Click  here for Team 3"))
+                  child: Text("Click  here for Team 3")),
+              (a == "")
+                  ? DropdownButtonFormField(
+                      onSaved: (val) {
+                        a = val.toString();
+                      },
+                      //value: playertype,
+                      items: teamlist.map<DropdownMenuItem<String>>(
+                        (String val) {
+                          return DropdownMenuItem(
+                            child: Text(val.toString()),
+                            value: val.toString(),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          a = val.toString();
+                          setTeamList();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Select Team 1',
+                        icon: Icon(Icons.place),
+                      ),
+                    )
+                  : Text(""),
+              (b == "")
+                  ? DropdownButtonFormField(
+                      onSaved: (val) {
+                        b = val.toString();
+                      },
+                      //value: playertype,
+                      items: teamlist.map<DropdownMenuItem<String>>(
+                        (String val) {
+                          return DropdownMenuItem(
+                            child: Text(val.toString()),
+                            value: val.toString(),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          b = val.toString();
+                          setTeamList();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Select Team 2',
+                        icon: Icon(Icons.place),
+                      ),
+                    )
+                  : Text(""),
+              (c == "")
+                  ? DropdownButtonFormField(
+                      onSaved: (val) {
+                        c = val.toString();
+                      },
+                      //value: playertype,
+                      items: teamlist.map<DropdownMenuItem<String>>(
+                        (String val) {
+                          return DropdownMenuItem(
+                            child: Text(val.toString()),
+                            value: val.toString(),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          c = val.toString();
+                          setTeamList();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Select Team 3',
+                        icon: Icon(Icons.place),
+                      ),
+                    )
+                  : Text(""),
             ],
           ),
         ),

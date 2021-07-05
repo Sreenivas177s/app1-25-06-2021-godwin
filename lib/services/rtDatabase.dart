@@ -1,5 +1,6 @@
 import 'package:app1/screens/CreateJoinRoom/YourTeams.dart';
 import 'package:app1/screens/CreateJoinRoom/team_player.dart';
+import 'package:app1/screens/ViewTeams/ViewTeams.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void addTeam(Map team) {
@@ -19,6 +20,7 @@ void getTeam() {
       teams.add(jsonToTeam(data[i].data()));
     }
   });
+
   // return convertedlist;
   //print(convertedlist[0].tname);
 }
@@ -37,4 +39,12 @@ void deleteTeam(Team teamz) async {
   }
   print(pos);
   querySnapshot.docs[pos].reference.delete();
+}
+
+void getIplTeam() {
+  CollectionReference collectionreference =
+      FirebaseFirestore.instance.collection('retrieveTeam');
+  collectionreference.snapshots().listen((snapshot) {
+      iplTeams=(snapshot.docs[0].data());
+  });
 }

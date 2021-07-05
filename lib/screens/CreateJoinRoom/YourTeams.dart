@@ -6,17 +6,21 @@ import 'package:flutter/material.dart';
 
 List teams = [];
 var tindex = null;
-List<Team> userteams = [];
+List<Team> userteams = [], nonUserTeams = [];
 
 void filterUserTeams() {
-  List<Team> a = [];
+  List<Team> a = [], b = [];
   for (var i = 0; i < teams.length; i++) {
     var item = teams[i];
     if (item.useremail == useremail) {
       a.add(item);
+    } else {
+      b.add(item);
     }
   }
   userteams = a;
+  nonUserTeams = b;
+  print(nonUserTeams);
 }
 
 class YourTeams extends StatefulWidget {

@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     getTeam();
     filterUserTeams();
+    print(teams);
     
   }
   @override

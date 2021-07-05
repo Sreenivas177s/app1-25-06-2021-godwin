@@ -1,10 +1,25 @@
 //import 'package:app1/screens/CreateJoinRoom/TeamDetails.dart';
 import 'package:app1/screens/CreateJoinRoom/team_player.dart';
+import 'package:app1/services/rtDatabase.dart';
 import 'package:flutter/material.dart';
 
 import 'YourTeams.dart';
 
-class AllTeams extends StatelessWidget {
+class AllTeams extends StatefulWidget {
+  @override
+  _AllTeamsState createState() => _AllTeamsState();
+}
+
+class _AllTeamsState extends State<AllTeams> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getTeam();
+      filterUserTeams();
+    });
+  }
+
   ListTile tiles(
       {required String name,
       required String number,
@@ -26,7 +41,7 @@ class AllTeams extends StatelessWidget {
                 icon: new Icon(Icons.chevron_right),
                 iconSize: 35,
                 onPressed: () {
-                  tindex = teams[index];
+                  tindex = nonUserTeams[index];
                   Navigator.pushNamed(
                     context,
                     '/teamdetails',
@@ -35,10 +50,6 @@ class AllTeams extends StatelessWidget {
       ]),
     );
   }
-
-  //void selectteam(BuildContext context) {
-  // Navigator.of(context).pushNamed(TeamDetails().routeName);
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,22 +61,21 @@ class AllTeams extends StatelessWidget {
         elevation: 10.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         child: Container(
-          alignment: Alignment.topLeft,
-          height: 582,
-          width: 340,
-          child:  ListView.builder(
+            alignment: Alignment.topLeft,
+            height: 582,
+            width: 340,
+            child: (nonUserTeams.length!=0)?ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 padding: EdgeInsets.all(10),
-                itemCount: teams.length,
+                itemCount: nonUserTeams.length,
                 itemBuilder: (BuildContext context, int index) {
                   return tiles(
-                      name: teams[index].tname,
-                      number: teams[index].adminphone,
+                      name: nonUserTeams[index].tname,
+                      number: nonUserTeams[index].adminphone,
                       context: context,
                       index: index);
-                })
-        ),
+                }):Text("Sorry! There are no Teams Available")),
       )),
     );
   }
